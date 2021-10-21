@@ -101,10 +101,12 @@ namespace CostumeCraze.Repositories
                 {
                     cmd.CommandText = @"
                                         INSERT INTO
-                                        UserProfile (Email, FirebaseUserId) 
+                                        UserProfile (FirstName, LastName, Email, FirebaseUserId) 
                                         OUTPUT INSERTED.ID
-                                        VALUES(@email, @firebaseUserId)";
+                                        VALUES(@firstName, @lastName, @email, @firebaseUserId)";
 
+                    cmd.Parameters.AddWithValue("@firstName", userProfile.FirstName);
+                    cmd.Parameters.AddWithValue("@lastName", userProfile.LastName);
                     cmd.Parameters.AddWithValue("@email", userProfile.Email);
                     cmd.Parameters.AddWithValue("@firebaseUserId", userProfile.FirebaseUserId);
 

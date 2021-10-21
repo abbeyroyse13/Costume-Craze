@@ -77,6 +77,8 @@ namespace CostumeCraze.Auth
 
             var newUserProfile = new UserProfile
             {
+                FirstName = registration.FirstName,
+                LastName = registration.LastName,
                 Email = fbUser.Email,
                 FirebaseUserId = fbUser.FirebaseUserId,
             };
