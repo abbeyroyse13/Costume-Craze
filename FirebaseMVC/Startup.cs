@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CostumeCraze.Auth;
 using CostumeCraze.Repositories;
+using CostumeCraze.Models;
 
 namespace CostumeCraze
 {
@@ -25,6 +26,7 @@ namespace CostumeCraze
             services.AddHttpClient();
             services.AddTransient<IFirebaseAuthService, FirebaseAuthService>();
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
