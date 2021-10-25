@@ -29,7 +29,14 @@ namespace CostumeCraze.Controllers
         // GET: ProductController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Product product = _productRepo.GetProductById(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
         }
 
         // GET: ProductController/Create
@@ -41,15 +48,17 @@ namespace CostumeCraze.Controllers
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Product product)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _productRepo.AddProduct(product);
+
+                return RedirectToAction("Index");
             }
-            catch
+            catch(Exception)
             {
-                return View();
+                return View(product);
             }
         }
 

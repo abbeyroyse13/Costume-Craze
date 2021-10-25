@@ -108,5 +108,32 @@ namespace CostumeCraze.Models
                 }
             }
         }
+            public void AddProduct(Product product)
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
+                            INSERT INTO Product (ImageUrl, [Name], [Description], Color, Price, Quantity, ProductTypeId)
+                            OUTPUT INSERTED.ID
+                            VALUES (@imageUrl, @name, @description, @color, @price, @quantity, @productTypeId);
+                            ";
+
+                        cmd.Parameters.AddWithValue("@imageUrl", product.ImageUrl);
+                        cmd.Parameters.AddWithValue("@name", product.Name);
+                        cmd.Parameters.AddWithValue("@description", product.Description);
+                        cmd.Parameters.AddWithValue("@color", product.Color);
+                        cmd.Parameters.AddWithValue("@price", product.Price);
+                        cmd.Parameters.AddWithValue("@quantity", product.Quantity);
+                        cmd.Parameters.AddWithValue("@productTypeId", product.ProductTypeId);
+
+                        int id = (int)cmd.ExecuteScalar();
+
+                        product.Id = id;
+                    }
+                }
+            }
     }
 }
