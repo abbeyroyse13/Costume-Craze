@@ -172,5 +172,25 @@ namespace CostumeCraze.Models
                 }
             }
         }
+
+        public void DeleteProduct(int productId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        DELETE FROM Product
+                        WHERE Id = @id
+                    ";
+
+                    cmd.Parameters.AddWithValue("@id", productId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
