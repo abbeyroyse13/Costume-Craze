@@ -95,21 +95,25 @@ namespace CostumeCraze.Controllers
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Product product = _productRepo.GetProductById(id);
+
+            return View(product);
         }
 
         // POST: ProductController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Product product)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _productRepo.DeleteProduct(id);
+
+                return RedirectToAction("Index");
             }
-            catch
+            catch(Exception)
             {
-                return View();
+                return View(product);
             }
         }
     }
