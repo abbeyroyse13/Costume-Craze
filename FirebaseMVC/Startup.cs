@@ -27,6 +27,7 @@ namespace CostumeCraze
             services.AddTransient<IFirebaseAuthService, FirebaseAuthService>();
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
