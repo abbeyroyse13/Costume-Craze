@@ -108,32 +108,69 @@ namespace CostumeCraze.Models
                 }
             }
         }
-            public void AddProduct(Product product)
+        public void AddProduct(Product product)
+        {
+            using (SqlConnection conn = Connection)
             {
-                using (SqlConnection conn = Connection)
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    conn.Open();
-                    using (SqlCommand cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandText = @"
-                            INSERT INTO Product (ImageUrl, [Name], [Description], Color, Price, Quantity, ProductTypeId)
+                    cmd.CommandText = @"
+                            INSERT INTO Product (ImageUrl, [Name], [Description], Color, Price, Quantity, ProductTypeId, UserProfileId)
                             OUTPUT INSERTED.ID
-                            VALUES (@imageUrl, @name, @description, @color, @price, @quantity, @productTypeId);
+                            VALUES (@imageUrl, @name, @description, @color, @price, @quantity, @productTypeId, @userProfileId);
                             ";
 
-                        cmd.Parameters.AddWithValue("@imageUrl", product.ImageUrl);
-                        cmd.Parameters.AddWithValue("@name", product.Name);
-                        cmd.Parameters.AddWithValue("@description", product.Description);
-                        cmd.Parameters.AddWithValue("@color", product.Color);
-                        cmd.Parameters.AddWithValue("@price", product.Price);
-                        cmd.Parameters.AddWithValue("@quantity", product.Quantity);
-                        cmd.Parameters.AddWithValue("@productTypeId", product.ProductTypeId);
+                    cmd.Parameters.AddWithValue("@imageUrl", product.ImageUrl);
+                    cmd.Parameters.AddWithValue("@name", product.Name);
+                    cmd.Parameters.AddWithValue("@description", product.Description);
+                    cmd.Parameters.AddWithValue("@color", product.Color);
+                    cmd.Parameters.AddWithValue("@price", product.Price);
+                    cmd.Parameters.AddWithValue("@quantity", product.Quantity);
+                    cmd.Parameters.AddWithValue("@productTypeId", product.ProductTypeId);
+                    cmd.Parameters.AddWithValue("@userProfileId", product.UserProfileId);
 
-                        int id = (int)cmd.ExecuteScalar();
+                    int id = (int)cmd.ExecuteScalar();
 
-                        product.Id = id;
-                    }
+                    product.Id = id;
                 }
             }
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Product 
+                        SET 
+                            ImageUrl = @imageUrl,
+                            [Name] = @name,
+                            [Description] = @description,
+                            Color = @color,
+                            Price = @price,
+                            Quantity = @quantity,
+                            ProductTypeId = @productTypeId,
+                            UserProfileId = @userProfileId
+                        WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@imageUrl", product.ImageUrl);
+                    cmd.Parameters.AddWithValue("@name", product.Name);
+                    cmd.Parameters.AddWithValue("@description", product.Description);
+                    cmd.Parameters.AddWithValue("@color", product.Color);
+                    cmd.Parameters.AddWithValue("@price", product.Price);
+                    cmd.Parameters.AddWithValue("@quantity", product.Quantity);
+                    cmd.Parameters.AddWithValue("@productTypeId", product.ProductTypeId);
+                    cmd.Parameters.AddWithValue("@userProfileId", product.UserProfileId);
+                    cmd.Parameters.AddWithValue("@id", product.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

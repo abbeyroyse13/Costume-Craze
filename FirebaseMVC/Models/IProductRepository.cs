@@ -11,5 +11,6 @@ namespace CostumeCraze.Models
         List<Product> GetAllProducts();
         Product GetProductById(int id);
         public void AddProduct(Product product);
+        public void UpdateProduct(Product product);
     }
 }
