@@ -10,6 +10,7 @@ namespace CostumeCraze.Models
     {
         public List<ProductType> GetAllProductTypes();
         public ProductType GetProductTypeById(int id);
-
+        public void AddProductType(ProductType productType);
+        public void UpdateProductType(ProductType productType);
     }
 }
