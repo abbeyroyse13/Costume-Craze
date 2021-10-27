@@ -41,36 +41,47 @@ namespace CostumeCraze.Controllers
         // POST: ProductTypeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(ProductType productType)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _productTypeRepo.AddProductType(productType);
+
+                return RedirectToAction("Index");
             }
-            catch
+            catch(Exception)
             {
-                return View();
+                return View(productType);
             }
         }
 
         // GET: ProductTypeController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            ProductType productType = _productTypeRepo.GetProductTypeById(id);
+
+            if (productType == null)
+            {
+                return NotFound();
+            }
+
+            return View(productType);
         }
 
         // POST: ProductTypeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, ProductType productType)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _productTypeRepo.UpdateProductType(productType);
+
+                return RedirectToAction("Index");
             }
-            catch
+            catch(Exception)
             {
-                return View();
+                return View(productType);
             }
         }
 

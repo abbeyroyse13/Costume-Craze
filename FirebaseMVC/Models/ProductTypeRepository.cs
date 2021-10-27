@@ -94,5 +94,49 @@ namespace CostumeCraze.Models
                 }
             }
         }
+
+        public void AddProductType(ProductType productType)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO ProductType ([Name])
+                        OUTPUT INSERTED.ID
+                        VALUES (@name)
+                    ";
+
+                    cmd.Parameters.AddWithValue("@name", productType.Name);
+
+                    int id = (int)cmd.ExecuteScalar();
+
+                    productType.Id = id;
+                }
+            }
+        }
+
+        public void UpdateProductType(ProductType productType)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE ProductType
+                        SET
+                            Name = @name
+                        WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@name", productType.Name);
+                    cmd.Parameters.AddWithValue("@id", productType.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
