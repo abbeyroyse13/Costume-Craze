@@ -13,31 +13,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                <label class="font-weight-bold">Id:</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
+                <label class="font-weight-bold">Image:</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <label class="font-weight-bold">Name:</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                <label class="font-weight-bold">Description:</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Color)
+                <label class="font-weight-bold">Color:</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                <label class="font-weight-bold">Price:</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                <label class="font-weight-bold">Quantity:</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductTypeId)
+                <label class="font-weight-bold">Product Type:</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserProfileId)
+                @*<label class="font-weight-bold">User Profile:</label>*@
             </th>
             <th></th>
         </tr>
@@ -67,10 +67,10 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductTypeId)
+                @Html.DisplayFor(modelItem => item.ProductType.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserProfileId)
+                @Html.DisplayFor(modelItem => item.UserProfile.Email)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

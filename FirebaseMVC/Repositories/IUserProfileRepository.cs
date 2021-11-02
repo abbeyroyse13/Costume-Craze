@@ -7,5 +7,6 @@ namespace CostumeCraze.Repositories
         void Add(UserProfile userProfile);
         UserProfile GetByFirebaseUserId(string firebaseUserId);
         UserProfile GetById(int id);
+        public UserProfile GetByUserProfileId(string userProfileId);
     }
 }
