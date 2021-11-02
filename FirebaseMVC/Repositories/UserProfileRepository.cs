@@ -8,23 +8,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace CostumeCraze.Repositories
 {
-    public class UserProfileRepository : IUserProfileRepository
+    public class UserProfileRepository : BaseRepository, IUserProfileRepository
     {
 
-        private readonly IConfiguration _config;
-
-        public UserProfileRepository(IConfiguration config)
-        {
-            _config = config;
-        }
-
-        public SqlConnection Connection
-        {
-            get
-            {
-                return new SqlConnection(_config.GetConnectionString("DefaultConnection"));
-            }
-        }
+        public UserProfileRepository(IConfiguration config) : base(config) { }
 
         public UserProfile GetById(int id)
         {
@@ -114,5 +101,41 @@ namespace CostumeCraze.Repositories
                 }
             }
         }
+
+        public UserProfile GetByUserProfileId(string userProfileId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                    SELECT Id, FirebaseUserId, FirstName, LastName, Email
+                                    FROM UserProfile
+                                    WHERE Id = @Id";
+
+                    cmd.Parameters.AddWithValue("@Id", userProfileId);
+
+                    UserProfile userProfile = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        userProfile = new UserProfile
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            FirebaseUserId = reader.GetString(reader.GetOrdinal("FirebaseUserId")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                            Email = reader.GetString(reader.GetOrdinal("Email")),
+                        };
+                    }
+                    reader.Close();
+
+                    return userProfile;
+                }
+            }
+        }
+
     }
 }

@@ -9,5 +9,10 @@ namespace CostumeCraze.Auth.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        internal static void Add(ProductType productType)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,10 +1,13 @@
 ﻿using CostumeCraze.Auth.Models;
 using CostumeCraze.Models;
+using CostumeCraze.Models.ViewModels;
+using CostumeCraze.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CostumeCraze.Controllers
@@ -12,10 +15,14 @@ namespace CostumeCraze.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepo;
+        private readonly IProductTypeRepository _productTypeRepo;
+        private readonly IUserProfileRepository _userProfileRepo;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, IProductTypeRepository productTypeRepository, IUserProfileRepository userProfileRepository)
         {
             _productRepo = productRepository;
+            _productTypeRepo = productTypeRepository;
+            _userProfileRepo = userProfileRepository;
         }
 
         // GET: ProductController
@@ -42,53 +49,63 @@ namespace CostumeCraze.Controllers
         // GET: ProductController/Create
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new ProductFormViewModel();
+            viewModel.ProductTypes = _productTypeRepo.GetAllProductTypes();
+
+            return View(viewModel);
         }
 
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Product product)
+        public ActionResult Create(ProductFormViewModel productFormViewModel)
         {
             try
             {
-                _productRepo.AddProduct(product);
+                string UserProfileId = GetCurrentUserProfileId();
+                var currentUser = _userProfileRepo.GetByUserProfileId(UserProfileId);
+                productFormViewModel.Product.UserProfileId = currentUser.Id;
+
+                _productRepo.AddProduct(productFormViewModel.Product);
 
                 return RedirectToAction("Index");
             }
             catch(Exception)
             {
-                return View(product);
+                return View(productFormViewModel.Product);
             }
         }
 
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            Product product = _productRepo.GetProductById(id);
+            var editViewModel = new ProductFormViewModel();
+            editViewModel.ProductTypes = _productTypeRepo.GetAllProductTypes();
+            editViewModel.Product = _productRepo.GetProductById(id);
 
-            if (product == null)
+            if (editViewModel.Product == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(editViewModel);
         }
 
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Product product)
+        public ActionResult Edit(int id, ProductFormViewModel editViewModel)
         {
             try
             {
-                _productRepo.UpdateProduct(product);
+                //editViewModel.Product = _productRepo.GetProductById(id);
+                _productRepo.UpdateProduct(editViewModel.Product);
 
                 return RedirectToAction("Index");
             }
             catch(Exception)
             {
-                return View(product);
+                return View(editViewModel);
             }
         }
 
@@ -116,5 +133,15 @@ namespace CostumeCraze.Controllers
                 return View(product);
             }
         }
+    private int GetLoggedUserProfileId()
+    {
+        string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return int.Parse(id);
     }
+    private string GetCurrentUserProfileId()
+    {
+        string userProfileId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return userProfileId;
+    }
+  }
 }
