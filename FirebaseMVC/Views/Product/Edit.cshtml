@@ -13,7 +13,8 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                @*<input asp-for="Id" class="form-control" />*@
+                <input asp-for="Product.Id" type="hidden" />
+                <input asp-for="Product.UserProfileId" type="hidden" />
             </div>
             <div class="form-group">
                 <label asp-for="Product.ImageUrl" class="control-label"></label>
