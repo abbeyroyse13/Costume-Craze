@@ -4,8 +4,6 @@
     ViewData["Title"] = "Products";
 }
 
-<h1>Index</h1>
-
 <p>
     <a asp-action="Create">List Product</a>
 </p>
@@ -13,29 +11,29 @@
     <thead>
         <tr>
             <th>
-                <label class="font-weight-bold">Id:</label>
-            </th>
+                <span style="color:white"><label class="font-weight-bold">Id:</label></span>
+</th>
             <th>
-                <label class="font-weight-bold">Image:</label>
-            </th>
+                <span style="color:white"><label class="font-weight-bold">Image:</label></span>
+</th>
             <th>
-                <label class="font-weight-bold">Name:</label>
-            </th>
+                <span style="color:white"><label class="font-weight-bold">Name:</label></span>
+</th>
             <th>
-                <label class="font-weight-bold">Description:</label>
-            </th>
+                <span style="color:white"><label class="font-weight-bold">Description:</label></span>
+</th>
             <th>
-                <label class="font-weight-bold">Color:</label>
-            </th>
+                <span style="color:white"><label class="font-weight-bold">Color:</label></span>
+</th>
             <th>
-                <label class="font-weight-bold">Price:</label>
-            </th>
+                <span style="color:white"><label class="font-weight-bold">Price:</label></span>
+</th>
             <th>
-                <label class="font-weight-bold">Quantity:</label>
-            </th>
+                <span style="color:white"><label class="font-weight-bold">Quantity:</label></span>
+</th>
             <th>
-                <label class="font-weight-bold">Product Type:</label>
-            </th>
+                <span style="color:white"><label class="font-weight-bold">Product Type:</label></span>
+</th>
             <th>
                 @*<label class="font-weight-bold">User Profile:</label>*@
             </th>
@@ -49,29 +47,29 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                <img src="@item.ImageUrl" alt="costume image" />
+                <img src="@item.ImageUrl" height="170" width="130" alt="costume image" />
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <span style="color:darkorange">@Html.DisplayFor(modelItem => item.Name)</span>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
+                <span style="color:darkorange">@Html.DisplayFor(modelItem => item.Description)</span>
+</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Color)
-            </td>
+                <span style="color:darkorange">@Html.DisplayFor(modelItem => item.Color)</span>
+</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
+                <span style="color:darkorange">@Html.DisplayFor(modelItem => item.Price)</span>
+</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
+                <span style="color:darkorange">@Html.DisplayFor(modelItem => item.Quantity)</span>
+</td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductType.Name)
-            </td>
+                <span style="color:darkorange">@Html.DisplayFor(modelItem => item.ProductType.Name)</span>
+</td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserProfile.Email)
-            </td>
+                <span style="color:darkorange">@Html.DisplayFor(modelItem => item.UserProfile.Email)</span>
+</td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id=item.Id }) |
